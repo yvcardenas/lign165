@@ -100,6 +100,8 @@ exp-13-4
   )
 
 ;; Problem 14
+(defn greater-than-seven? [l] 
+(map (fn [x] (if (> x 7) true false) ) l))
 
 ;; Problem 15
 
