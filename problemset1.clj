@@ -9,14 +9,14 @@
 ;; Problem 2
 ;; 2.1
 ;; (defn take-square
-;;   (* x x)) ;; Wrong because it doesn't have a parameter
+;;   (* x x)) ;; Wrong because it doesn't have a parameter.
 
 ;; Corrected version
 (defn take-square [x] (* x x))
 
 ;; 2.2
 ;; (defn sum-of-squares [(take-square x) (take-square y)]
-;;   (+ (take-square x) (take-square y))) ;; Wrong because it functions cannot be the parameters, thhe parameters should be the arguments x and y
+;;   (+ (take-square x) (take-square y))) ;; Wrong because function calls cannot be the parameters. Parameters should be the arguments x and y
 
 ;; Corrected version
 (defn sum-of-squares [x y]
