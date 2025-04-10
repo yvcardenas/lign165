@@ -61,10 +61,27 @@
 
 
 ;; Problem 9 
+;; helper function to get the last element
+(defn last-list [l]
+  (if (empty? (rest l))
+    (first l)
+    (last-list (rest l)))
+)
+
+;; helper function to return the rest of the list except for the last element
+(defn except-last [l]
+  ;; if rest of the list is empty, then return empty list (bc it's the last element)
+  (if (empty? (rest l))
+    ();
+    ;; else: if the rest of the list is not empty, cons a list with the first element 
+    ;; and recursively apply except-last function to the rest
+    (cons (first l) (except-last (rest l))))
+)
+
 (defn reverse [l]
   (if (empty? l)
     '()
-    (cons (last l) (reverse (butlast l)))))
+    (cons (last-list l) (reverse (except-last l)))))
  
 
 ;; Problem 10
@@ -105,6 +122,7 @@
 
 
 ;; Problem 15
+;; helper function
 (defn join-two [l1 l2]
 
   (if (empty? l1)
