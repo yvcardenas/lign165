@@ -4,7 +4,8 @@
 ;;
 
 ;; Problem 1
-(defn abs [x] (Math/sqrt x))
+(defn abs [x] (Math/sqrt (* x x)))
+
 
 ;; Problem 2
 ;; 2.1
@@ -31,8 +32,10 @@
 ;; Problem 4
 (defn third [l] (first (rest (rest l))))
 
+
 ;; Problem 5
 (defn chain [f g] (fn [x] (f (g x))))
+
 
 ;; Problem 6 
 (defn last-two [l]
@@ -40,10 +43,12 @@
     (rest l)
     (last-two (rest l))))
 
+
 ;; Problem 7
 (defn remove-second [l] (cons
                           (first l)
                           (rest (rest l))))
+
 
 ;; Problem 8
 (defn add-to-end [l x] 
@@ -51,11 +56,13 @@
     (list x)
     (cons (first l) (add-to-end (rest l) x))))
 
+
 ;; Problem 9 
 (defn reverse [l]
   (if (empty? l)
     '()
     (cons (last l) (reverse (butlast l)))))
+ 
 
 ;; Problem 10
 (defn reverse-nested [l]
@@ -63,17 +70,20 @@
     '()
     (cons (reverse (first l)) (reverse-nested (rest l)))))
 
+
 ;; Problem 11 given n, print (1, 2, 3, ..., n)
 (defn count-to-n [n]
   (if (= n 0)
     '()
     (concat (count-to-n (- n 1)) (list n))))
 
+
 ;; Problem 12
 (defn count-to-1 [n]
   (if (= n 0)
     '()
     (cons n (count-to-1 (- n 1)))))
+
 
 ;; Problem 13
 (defn get-max [l]
@@ -84,10 +94,12 @@
         (first l)
         temp))))
 
+
 ;; Problem 14
 (defn greater-than-seven? [l] 
   (map (fn [x] 
     (if (> x 7) true false)) l))
+
 
 ;; Problem 15
 (defn join-two [l1 l2]
@@ -121,5 +133,6 @@
       ) 
   )
 )
+
 
 ;; Problem 17

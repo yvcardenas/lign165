@@ -62,3 +62,39 @@ clj꞉user꞉> 
 clj꞉user꞉> 
 ; Could not resolve symbol: concat-three
 clj꞉user꞉> 
+; Execution error (ClassCastException) at user/eval10875 (REPL:8).
+; class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉user꞉> 
+; Execution error (ClassCastException) at user/eval11114 (REPL:8).
+; class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉user꞉> 
+; Syntax error compiling at (problemset1.clj:34:1).
+; Unable to resolve symbol: third in this context
+clj꞉user꞉> 
+; Syntax error compiling at (problemset1.clj:34:1).
+; Unable to resolve symbol: third in this context
+clj꞉user꞉> 
+; Syntax error compiling at (problemset1.clj:38:2).
+; Unable to resolve symbol: sqrt in this context
+clj꞉user꞉> 
+; Syntax error compiling at (problemset1.clj:46:1).
+; Unable to resolve symbol: last-two in this context
+clj꞉user꞉> 
+; Syntax error compiling at (problemset1.clj:51:1).
+; Unable to resolve symbol: remove-second in this context
+clj꞉user꞉> 
+; Execution error (NullPointerException) at user/get-max (REPL:93).
+; Cannot invoke "Object.getClass()" because "x" is null
+clj꞉user꞉> 
+; Execution error (NullPointerException) at user/get-max (REPL:93).
+; Cannot invoke "Object.getClass()" because "x" is null
+clj꞉user꞉> 
+; Execution error (NullPointerException) at user/get-max (REPL:93).
+; Cannot invoke "Object.getClass()" because "x" is null
+clj꞉user꞉> 
+; Execution error (NullPointerException) at user/get-max (REPL:93).
+; Cannot invoke "Object.getClass()" because "x" is null
+clj꞉user꞉> 
+; Syntax error compiling at (problemset1.clj:112:1).
+; Unable to resolve symbol: concat-three in this context
+clj꞉user꞉> 
