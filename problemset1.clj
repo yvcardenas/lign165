@@ -104,6 +104,15 @@ exp-13-4
 (map (fn [x] (if (> x 7) true false) ) l))
 
 ;; Problem 15
+(defn join-two [lst1 lst2]
+
+  (if (empty? lst1)
+    lst2
+    (cons (first lst1) (join-two (rest lst1) lst2)))
+)
+
+(defn concat-three [x y z] (join-two (join-two x y) z))
+(concat-three '(a b) '(b c) '(d e))
 
 ;; Problem 16
 
