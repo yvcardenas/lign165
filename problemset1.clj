@@ -114,20 +114,19 @@
 ;; Problem 16
 (defn interleave [l1 l2]
   (cond
-    ; when both lists are empty list
+    ;; when both lists are empty list
     (and (empty? l1) (empty? l2)) '()
-    ; when l1 is empty list
+    ;; when l1 is empty list
     (empty? l1) l2
-    ; when l2 is empty list
+    ;; when l2 is empty list
     (empty? l2) l1
-    ; else (when none of them is empty)
-    ; 
+    ;; else (when none of them is empty)
     :else
       (cons (first l1)
-        ; list part of cons 
+        ;; list part of cons 
         (cons (first l2) 
-          ; list part of cons
-          ; this part is recursive
+          ;; list part of cons
+          ;; this part is recursive
           (interleave (rest l1) (rest l2))
         )
       ) 
@@ -136,3 +135,42 @@
 
 
 ;; Problem 17
+(defn flatten [l]
+  (if (empty? l)
+    ;; then
+    '()
+    ;; else
+    ;; (apply concat l)
+    (let [first-list (first l)
+          rest-list (rest l)]
+
+          (if (list? first-list)
+          ;; then
+          (concat (flatten first-list) (flatten rest-list))
+          ;; else
+          (cons first-list (flatten rest-list))
+          )
+    )
+  )
+) 
+;; 1. if empty list - return empty list
+;; 2. else not empty list
+;;   copy elements in the list until there is a list inside
+;;   recursively check if there is a list inside
+;;     if there is a list inside, copy elements in the list until 
+
+;; 1. if list is empty
+;;   return empty list
+;; 2. else
+;;   for each element
+;;   (we need to divide the list to first and rest)
+;;     check if an element(first) is a list
+;;     - if it's a list: apply flatten to first element + apply flatten function to the rest
+;;     - else(if it's not list): first element + apply flatten function to the rest
+
+
+;; (1 2 (3 (4 5) 6) 7 8)
+;; 1. (3 (4 5) 6) is a list, 1 2 7 8 is considered just regular elements
+;; 2. In (3 (4 5) 6), (4 5) is a list
+
+   
