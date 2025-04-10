@@ -1,7 +1,4 @@
 ;; Problem Set 1
-;; Yvanna Cardenas
-;;
-;;
 
 ;; Problem 1
 (defn abs [x] (Math/sqrt (* x x)))
@@ -15,6 +12,7 @@
 ;; Corrected version
 (defn take-square [x] (* x x))
 
+
 ;; 2.2
 ;; (defn sum-of-squares [(take-square x) (take-square y)]
 ;;   (+ (take-square x) (take-square y))) ;; Wrong because function calls cannot be the parameters. Parameters should be the arguments x and y
@@ -22,6 +20,7 @@
 ;; Corrected version
 (defn sum-of-squares [x y]
   (+ (take-square x) (take-square y)))
+
 
 ;; Problem 3
 (def exp-13-1 (- 15 2))
