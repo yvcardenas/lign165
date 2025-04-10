@@ -86,17 +86,40 @@
 
 ;; Problem 14
 (defn greater-than-seven? [l] 
-(map (fn [x] (if (> x 7) true false) ) l))
+  (map (fn [x] 
+    (if (> x 7) true false)) l))
 
 ;; Problem 15
-(defn join-two [lst1 lst2]
+(defn join-two [l1 l2]
 
-  (if (empty? lst1)
-    lst2
-    (cons (first lst1) (join-two (rest lst1) lst2))))
+  (if (empty? l1)
+    l2
+    (cons (first l1) (join-two (rest l1) l2))))
 
 (defn concat-three [x y z] (join-two (join-two x y) z))
 
+
 ;; Problem 16
+(defn interleave [l1 l2]
+  (cond
+    ; when both lists are empty list
+    (and (empty? l1) (empty? l2)) '()
+    ; when l1 is empty list
+    (empty? l1) l2
+    ; when l2 is empty list
+    (empty? l2) l1
+    ; else (when none of them is empty)
+    ; 
+    :else
+      (cons (first l1)
+        ; list part of cons 
+        (cons (first l2) 
+          ; list part of cons
+          ; this part is recursive
+          (interleave (rest l1) (rest l2))
+        )
+      ) 
+  )
+)
 
 ;; Problem 17
