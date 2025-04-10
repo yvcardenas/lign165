@@ -1,4 +1,8 @@
 ;; Problem Set 1
+;; Yvanna Cardenas, Jeong Lee, Zere Mukanova
+;; Contributions: 
+;; We all first solved all the questions before the group meeting 
+;; and then met up and discussed and solved difficult questions together.
 
 ;; Problem 1
 (defn abs [x] (Math/sqrt (* x x)))
