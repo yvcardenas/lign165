@@ -93,7 +93,10 @@
 ;; When called with (recognize-palindrome str ’()), it returns true if str is a palindrome and false otherwise.
 ;; For example, the procedure should return true on the input (list ’c ’a ’b ’b ’a ’c). It should return false on
 ;; the input (list ’c ’c ’a ’b ’b ’a ’c ’d).
-
+(defn recognize-palindrome [str L]
+  (if (= str (reverse str))
+    true
+    false))
 
 
 
@@ -122,14 +125,16 @@
 
 
 ;; Problem 8: concat(B, A).
-;; Let A and B be languages. Find an example of languages A and B such that concat(A, B) =
+A = {[a]}
+B = {[]}
+
+
 ;; Problem 9: does not equal concat(B, A)
-;; Let A and B be languages. Find an example of languages A and B such that concat(A, B)
-
-
+A = {[a]}
+B = {[b]}
 
 ;; Problem 10: Find an example of a language L such that L= L2, i.e. L= concat(L, L).
-
+L = {[]}
 
 
 ;; Problem 11: Write a procedure matches-a+b*c? that takes a single input str as its argument, and
