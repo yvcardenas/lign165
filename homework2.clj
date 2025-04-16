@@ -1,7 +1,10 @@
 ;; Problem 1: Write a procedure, called sequence-to-power, that takes a sequence (represented as a list) x,
 ;; and a positive integer n, and returns the sequence xn. For example, given the sequence (list ’a ’b) and the
 ;; number 3, the procedure should return (list ’a ’b ’a ’b ’a ’b).
-
+(defn sequence-to-power [x n]
+  (if (= n 1)
+    x
+    (concat x (sequence-to-power x (- n 1)))))
 
 
 ;; Problem 2: Define L as a language containing a single sequence, L= {[b]}. (Note: the notation [b] means
