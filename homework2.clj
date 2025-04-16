@@ -11,7 +11,19 @@
 ;; the same thing as (list ’b), which is what we have been using in class). Write a procedure in-L? that takes a
 ;; sequence (represented as a list), and decides if it is a member of the language L∗. That is, given a sequence
 ;; x, the procedure should return true if and only if x is a member of L∗, and false otherwise.
+(defn prefix? [prefix lst]
+  (if (= (first lst) (first prefix))
+    true
+    false))
 
+(defn in-L? [x]
+  (if (= (count x) 0)
+    true
+    (if (prefix? '(b) x)
+      (in-L? (rest x))
+      false)))
+
+(in-L? '())
 
 
 ;; Problem 3: Define the language bnan as follows: it is the set of strings consisting of k b’s followed by k
@@ -19,7 +31,16 @@
 ;; single argument k (which you can assume to be an integer greater than 0). It should return the k’th element
 ;; of the language bnan. For example, given the number 3, it should return (list ’b ’b ’b ’a ’a ’a).
 ;; Hint: Use the function add-to-end that you wrote in Problem Set 1.
+(defn add-to-end [l x]
+  (if (empty? l)
+    (list x)
+    (cons (first l) (add-to-end (rest l) x))))
 
+
+(defn generate-bn-an [k]
+  (if (= 1 k)
+    (list 'b 'a)
+    (add-to-end (cons 'b (generate-bn-an (- k 1))) 'a)))
 
 
 ;; Problem 4: Write a procedure remove-last-element, which takes a single list l as its argument. The
@@ -27,13 +48,44 @@
 ;; the procedure should return (list ’a ’b).
 ;; Hint: Use the procedure reverse that you wrote in Problem Set 1.
 
+(defn last-list [l]
+  (if (empty? (rest l))
+    (first l)
+    (last-list (rest l))))
+
+;; helper function to return the rest of the list except for the last element
+(defn except-last [l]
+  ;; if rest of the list is empty, then return empty list (bc it's the last element)
+  (if (empty? (rest l))
+    ();
+    ;; else: if the rest of the list is not empty, cons a list with the first element 
+    ;; and recursively apply except-last function to the rest
+    (cons (first l) (except-last (rest l)))))
+
+(defn reverse [l]
+  (if (empty? l)
+    '()
+    (cons (last-list l) (reverse (except-last l)))))
+
+(defn remove-last-element [l]
+  (if (empty? l)
+    '()
+    (reverse (rest (reverse l)))))
+
 
 
 ;; Problem 5: Writeaprocedurerecognize-bn-an, thattakesaninputstring strasitsargument, andreturns
 ;; true if str is a member of bnan and false otherwise. For example, the procedure should return false on the
 ;; input (list ’b ’b ’a ’a ’b).
 ;; Hint: Use the procedures reverse and remove-last-element from the last problem.
-
+(defn recognize-bn-an [str]
+  (if (empty? str)
+    true
+    (if (= (first str) "b")
+      (if (= (first (reverse str)) "a")
+        (recognize-bn-an (rest (remove-last-element str)))
+        false)
+      false)))
 
 
 
@@ -41,6 +93,7 @@
 ;; When called with (recognize-palindrome str ’()), it returns true if str is a palindrome and false otherwise.
 ;; For example, the procedure should return true on the input (list ’c ’a ’b ’b ’a ’c). It should return false on
 ;; the input (list ’c ’c ’a ’b ’b ’a ’c ’d).
+
 
 
 
@@ -54,7 +107,18 @@
 ;; Write a procedure concat-L-A that takes two arguments, L and A, as defined above. It should return
 ;; concat(L, A), the concatenation of L and A. The return value should be represented as a list of lists (i.e.,
 ;; a list of strings).
+(defn join-two [l1 l2]
 
+  (if (empty? l1)
+    l2
+    (cons (first l1) (join-two (rest l1) l2))))
+
+(defn concat-L-A [L A]
+  (if (empty? A)
+    L
+    (map (fn [x] (join-two L x)) A)))
+
+(concat-L-A '(a) '((a b) (b b)))
 
 
 ;; Problem 8: concat(B, A).
