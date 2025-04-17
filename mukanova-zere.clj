@@ -28,6 +28,7 @@
 
 
 ;; Problem 3
+; Helper function from Problem Set 1
 (defn add-to-end [l x]
   (if (empty? l)
     (list x)
@@ -98,20 +99,20 @@
     L
     (map (fn [x] (join-two L x)) A)))
 
-;; (concat-L-A '(a) '((a b) (b b)))
+
 
 
 ;; Problem 8: concat(B, A).
-A = {[a]}
-B = {[a]}
+;A = {[a]}
+;B = {[a]}
 
 
 ;; Problem 9: does not equal concat(B, A)
-A = {[a]}
-B = {[b]}
+;A = {[a]}
+;B = {[b]}
 
 ;; Problem 10: Find an example of a language L such that L= L2, i.e. L= concat(L, L).
-L = {[]}
+;L = {[]}
 
 
 ;; Problem 11
@@ -138,15 +139,17 @@ L = {[]}
       (empty? (rest s))
       false)))
 
-(defn matches-a+b*c? [s]
+(defn matches-a+b*c? [str]
   ;; If the string is empty return false   
-  (if (empty? s)
+  (if (empty? str)
     false
     ;; If the first character is \a, skip all leading \a's and check the rest
-    (if (= \a (first s))
+    (if (= \a (first str))
       ;; Check if the rest of the string has zero or more \b's and then check for \c   
-      (check-c (skip-bs (skip-as s)))
+      (check-c (skip-bs (skip-as str)))
       false)))
+
+
 
 
 ;; Problem 12
@@ -176,10 +179,10 @@ L = {[]}
 
 ;; recursively adds new part of the strings to the existing parts from n-1
 ;; l is a list of strings like L = (list "a" "ab")
-(defn kleene-star [l n]
+(defn kleene-star [L n]
   (if (= n 0)
     '("")
-    (concat (kleene-star l (- n 1))
-            (kleene-star-helper l n))
+    (concat (kleene-star L (- n 1))
+            (kleene-star-helper L n))
   )
 )
