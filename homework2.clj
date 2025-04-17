@@ -140,8 +140,39 @@ L = {[]}
 ;; Problem 11: Write a procedure matches-a+b*c? that takes a single input str as its argument, and
 ;; returns true if the string is in the language a+b*c?, and false otherwise. Here, a+b*c? means one or more
 ;; ’a’ characters, followed by zero or more ’b’ characters, followed by zero or one ’c’ character.
+;; Helper Function 1: Drop every leading \a
+(defn skip-as [s]
+  (if (empty? s)
+    s
+    (if (= \a (first s))
+      (skip-as (rest s))
+      s)))
 
+;; Helper Function 2: Drop every leading \b
+(defn skip-bs [s]
+  (if (empty? s)
+    s
+    (if (= \b (first s))
+      (skip-bs (rest s))
+      s)))
 
+;; Helper Function 3: Check that what's left is zero or exactly one \c
+(defn check-c [s]
+  (if (empty? s)
+    true
+    (if (= \c (first s))
+      (empty? (rest s))
+      false)))
+
+(defn matches-a+b*c? [s]
+  ;; If the string is empty return false   
+  (if (empty? s)
+    false
+    ;; If the first character is \a, skip all leading \a's and check the rest
+    (if (= \a (first s))
+      ;; Check if the rest of the string has zero or more \b's and then check for \c   
+      (check-c (skip-bs (skip-as s)))
+      false)))
 
 ;; Problem 12: Write a procedure kleene-star that takes a language L (represented as a list of strings) and
 ;; a non-negative integer n, and returns the Kleene star of L up to n repetitions. The Kleene star of a language
