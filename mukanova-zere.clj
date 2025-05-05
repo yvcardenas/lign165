@@ -154,7 +154,7 @@
 
 ;; Problem 12
 
-;; rewrite concat-L-A so that it for strings instead of lists
+;; rewrite join-two-string and concat-L-A so that they work for strings instead of lists
 (defn join-two-string [s1 s2]
   (str s1 s2)
 )
@@ -168,12 +168,12 @@
 )
 
 ;; Helper function: Gets new part of L, basically length n part ex) "aa" "aab" "aba" "abab" of L 2
-(defn kleene-star-helper [l n]
+(defn kleene-star-helper [L n]
   (cond
     (= n 0) '("")
-    (= n 1) l
+    (= n 1) L
     :else
-      (concat-L-A-string l (kleene-star-helper l (- n 1)))
+      (concat-L-A-string L (kleene-star-helper L (- n 1)))
   )
 )
 
@@ -182,7 +182,6 @@
 (defn kleene-star [L n]
   (if (= n 0)
     '("")
-    (concat (kleene-star L (- n 1))
-            (kleene-star-helper L n))
+    (concat (kleene-star L (- n 1)) (kleene-star-helper L n))
   )
 )
