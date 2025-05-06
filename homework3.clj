@@ -125,3 +125,62 @@
   (repeat (fn [] (sample-BOW-sentence sent-len theta)) corpus-len)
   )
     
+;; 9
+;; Define a procedure estimate-corpus-marginal, the prcedure should return
+;; an estimate of the marginal likelihood of the target corpus, using the formula
+;; defined in Equestion 3
+;; (defn get-theta [theta-corpus]
+;;   (first theta-corpus))
+
+;; (defn get-corpus [theta-corpus]
+;;   (first (rest theta-corpus)))
+
+;; (defn sample-thetas-corpora [sample-size sent-len corpus-len theta-probs]
+;;   (repeatedly sample-size #(sample-theta-corpus sent-len corpus-len theta-probs)))
+
+;; (defn sample-theta-corpus [sent-len corpus-len theta-probs]
+;;   (list theta1 '((call me) (call ishmael))))
+
+(defn estimate-corpus-marginal [target-corpus sample-size sent-len corpus-len theta-probs]
+  (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
+        corpora (map get-corpus samples)
+        match-count (count (filter #(= % target-corpus) corpora))]
+    (/ match-count sample-size)))
+
+;; (estimate-corpus-marginal my-corpus 10 2 2 theta-prior)
+
+;; 10
+;; (estimate-corpus-marginal my-corpus 50 2 2 theta-prior) 
+;; Since we were calling the function with a sample size of 50, the output
+;; would fluctuate from run to run. In some runs, the estimated probability
+;; of the corpus was 0.0, while in others it was 0.8. This variability is 
+;; is due to the smaller number of samples which leads to high variance. 
+
+;; (estimate-corpus-marginal my-corpus 2000 2 2 theta-prior)
+;; The estimated marginal likelihood stabalized with the output of around 0.05.
+;; This is not surprising since it is espected for the estimate to become
+;; more stable as the sample size increases. 
+
+;; COmpare to the exactmarginal likelihood computed in Problem 2?
+
+;; 11
+(defn rejection-sampler [theta observed-corpus sample-size sent-len corpus-len theta-probs]
+  (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
+        accepted (filter #(= (get-corpus %) observed-corpus) samples)
+        accepted-thetas (map get-theta accepted)
+        counts (get-counts thetas accepted-thetas) ; returns list of counts for each theta
+        theta-index (.indexOf thetas theta)
+        theta-count (nth counts theta-index)
+        total (count accepted)]
+    (if (zero? total)
+      0
+      (/ theta-count total))))
+
+;; 12
+;; After calling the rejection-sample function with a sample size of 100, 
+;; a number otimes, I noticed that the results fluctuated significantly. 
+;; The sample size needs to be to be increased to 1000 or 2000 to start 
+;; getting a stable estimate of the conditional probability. It takes so
+;; many samples to get a stable estimate because rejection sampling discards
+;; all samples that do not match the observed corpus. This means that these
+;; matches are rare, and even more when we do not have a large sample size.
