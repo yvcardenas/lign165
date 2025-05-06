@@ -234,15 +234,22 @@
 ;; (estimate-corpus-marginal my-corpus 50 2 2 theta-prior) 
 ;; Since we were calling the function with a sample size of 50, the output
 ;; would fluctuate from run to run. In some runs, the estimated probability
-;; of the corpus was 0.0, while in others it was 0.8. This variability is 
+;; of the corpus was 0.0, while in others it was 0.08. This variability is 
 ;; is due to the smaller number of samples which leads to high variance. 
 
 ;; (estimate-corpus-marginal my-corpus 2000 2 2 theta-prior)
-;; The estimated marginal likelihood stabalized with the output of around 0.05.
-;; This is not surprising since it is espected for the estimate to become
+;; The estimated marginal likelihood stabalized with the output of around 0.01.
+;; This is not surprising since it is expected for the estimate to become
 ;; more stable as the sample size increases. 
 
 ;; COmpare to the exactmarginal likelihood computed in Problem 2?
+;; In problem 2 we computed the exact log probability value which was about -6.4. 
+;; If we were to exponentiate the value we would get a value of around 0.009 or 0.01.
+;; In this case, when using a sample size of 2000 while estimating, the result stabalize
+;; at around 0.009 or 0.01 which is very close to what we found in problem 2. This 
+;; confirms that the sampling based estimation converges correctly as the size of the 
+;; sample size increases. 
+
 
 ;; 11
 (defn rejection-sampler [theta observed-corpus sample-size sent-len corpus-len theta-probs]
