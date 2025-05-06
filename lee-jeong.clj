@@ -210,17 +210,17 @@
 ;; Define a procedure estimate-corpus-marginal, the prcedure should return
 ;; an estimate of the marginal likelihood of the target corpus, using the formula
 ;; defined in Equestion 3
-;; (defn get-theta [theta-corpus]
-;;   (first theta-corpus))
+(defn get-theta [theta-corpus]
+  (first theta-corpus))
 
-;; (defn get-corpus [theta-corpus]
-;;   (first (rest theta-corpus)))
+(defn get-corpus [theta-corpus]
+  (first (rest theta-corpus)))
 
-;; (defn sample-thetas-corpora [sample-size sent-len corpus-len theta-probs]
-;;   (repeatedly sample-size #(sample-theta-corpus sent-len corpus-len theta-probs)))
+(defn sample-thetas-corpora [sample-size sent-len corpus-len theta-probs]
+  (repeatedly sample-size #(sample-theta-corpus sent-len corpus-len theta-probs)))
 
-;; (defn sample-theta-corpus [sent-len corpus-len theta-probs]
-;;   (list theta1 '((call me) (call ishmael))))
+(defn sample-theta-corpus [sent-len corpus-len theta-probs]
+  (list theta1 '((call me) (call ishmael))))
 
 (defn estimate-corpus-marginal [target-corpus sample-size sent-len corpus-len theta-probs]
   (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
@@ -228,16 +228,16 @@
         match-count (count (filter #(= % target-corpus) corpora))]
     (/ match-count sample-size)))
 
-;; (estimate-corpus-marginal my-corpus 10 2 2 theta-prior)
+(estimate-corpus-marginal my-corpus 10 2 2 theta-prior)
 
 ;; 10
-;; (estimate-corpus-marginal my-corpus 50 2 2 theta-prior) 
+(estimate-corpus-marginal my-corpus 50 2 2 theta-prior) 
 ;; Since we were calling the function with a sample size of 50, the output
 ;; would fluctuate from run to run. In some runs, the estimated probability
 ;; of the corpus was 0.0, while in others it was 0.08. This variability is 
 ;; is due to the smaller number of samples which leads to high variance. 
 
-;; (estimate-corpus-marginal my-corpus 2000 2 2 theta-prior)
+(estimate-corpus-marginal my-corpus 2000 2 2 theta-prior)
 ;; The estimated marginal likelihood stabalized with the output of around 0.01.
 ;; This is not surprising since it is expected for the estimate to become
 ;; more stable as the sample size increases. 
@@ -265,6 +265,7 @@
       (/ theta-count total))))
 
 ;; 12
+(rejection-sampler theta1 my-corpus 100 2 2 theta-prior)
 ;; After calling the rejection-sample function with a sample size of 100, 
 ;; a number otimes, I noticed that the results fluctuated significantly. 
 ;; The sample size needs to be to be increased to 1000 or 2000 to start 
