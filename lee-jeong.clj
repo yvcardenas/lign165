@@ -222,10 +222,10 @@
 (defn sample-theta-corpus [sent-len corpus-len theta-probs]
   (list theta1 '((call me) (call ishmael))))
 
-(defn estimate-corpus-marginal [target-corpus sample-size sent-len corpus-len theta-probs]
+(defn estimate-corpus-marginal [corpus sample-size sent-len corpus-len theta-probs]
   (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
         corpora (map get-corpus samples)
-        match-count (count (filter #(= % target-corpus) corpora))]
+        match-count (count (filter #(= % corpus) corpora))]
     (/ match-count sample-size)))
 
 (estimate-corpus-marginal my-corpus 10 2 2 theta-prior)
