@@ -1,8 +1,9 @@
 ;; Problem Set 3
 ;; Yvanna Cardenas, Jeong Lee, Zere Mukanova
 ;; Contributions: 
-;; We all first solved all the questions before the group meeting 
+;; We all first tried to solve all the questions before the group meeting 
 ;; and then met up, discussed and solved difficult questions together.
+;; Jeong mostly worked on 1, 2, 3, 8, Zere mostly worked on 4, 5, 6, 7 and Yvanna mostly worked on 9, 10, 11, 12
 
 
 ;#1
@@ -166,23 +167,28 @@
 ;; coin flip
 (defn flip [weight]
   (if (< (rand 1) weight)
-    true false))
+    true 
+    false))
 
 ;; picks one from outcomes
-(defn sample-categorical [outcomes params] (if (flip (first params))
-                                             (first outcomes) (sample-categorical (rest outcomes)
-                                                                                  (normalize (rest params)))))
+(defn sample-categorical [outcomes params]
+  (if (flip (first params))
+    (first outcomes)
+    (sample-categorical (rest outcomes)
+      (normalize (rest params)))))
 
 ;; repeats function call n times                                                                                
-(defn repeat [f n] (if (= n 0)
-                     '()
-                     (cons (f) (repeat f (- n 1)))))
+(defn repeat [f n]
+  (if (= n 0)
+    '()
+    (cons (f) (repeat f (- n 1)))))
 
 ;; samples a sentence from the bag of words model of length len, given the parameters theta
-(defn sample-BOW-sentence [len probabilities] (if (= len 0)
-                                                '()
-                                                (cons (sample-categorical vocabulary probabilities)
-                                                      (sample-BOW-sentence (- len 1) probabilities))))
+(defn sample-BOW-sentence [len probabilities]
+  (if (= len 0)
+    '()
+    (cons (sample-categorical vocabulary probabilities)
+      (sample-BOW-sentence (- len 1) probabilities))))
 
 
 ;#7
@@ -215,7 +221,7 @@
 ;#9
 ;; Define a procedure estimate-corpus-marginal, the prcedure should return
 ;; an estimate of the marginal likelihood of the target corpus, using the formula
-;; defined in Equestion 3
+;; defined in Equation 3
 (defn get-theta [theta-corpus]
   (first theta-corpus))
 
@@ -223,7 +229,7 @@
   (first (rest theta-corpus)))
 
 (defn sample-thetas-corpora [sample-size sent-len corpus-len theta-probs]
-  (repeatedly sample-size #(sample-theta-corpus sent-len corpus-len theta-probs)))
+  (repeat (fn [] (sample-theta-corpus sent-len corpus-len theta-probs)) sample-size))
 
 ;; (defn sample-theta-corpus [sent-len corpus-len theta-probs]
 ;;   (list theta1 '((call me) (call ishmael))))
@@ -262,7 +268,7 @@
   (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
         accepted (filter #(= (get-corpus %) observed-corpus) samples)
         accepted-thetas (map get-theta accepted)
-        counts (get-counts thetas accepted-thetas) ; returns list of counts for each theta
+        counts (get-counts thetas accepted-thetas)
         theta-index (.indexOf thetas theta)
         theta-count (nth counts theta-index)
         total (count accepted)]
