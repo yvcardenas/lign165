@@ -5,7 +5,7 @@
 ;; and then met up, discussed and solved difficult questions together.
 
 
-;1
+;#1
 ;; given helper functions and variables
 
 (def vocabulary '(call me ishmael))
@@ -83,7 +83,7 @@
 (theta-corpus-joint theta1 my-corpus theta-prior)
 
 
-;2
+;#2
 ;; Pr(C= corpus,θ= theta)
 ;; Hint: Use the logsumexp function defined above.
 ;; log(Sigma θ∈Θ Pr(C= corpus,Θ = θ))
@@ -95,7 +95,8 @@
 
 (compute-marginal my-corpus theta-prior)
 
-;3
+
+;#3
 ;; wanna get log (Pr(Θ = θ|C= corpus))
 ;; log Pr(θ|C) = log Pr(C,θ) - log (Sigma θ∈Θ Pr(C= corpus,Θ = θ))
 ;; from problem 1, we know log Pr(C,θ)
@@ -106,7 +107,7 @@
 )
 
 
-;4
+;#4
 (defn compute-conditional-dist [corpus theta-probs]
   (let [result1 (theta-corpus-joint theta1 corpus theta-probs)
         result2 (theta-corpus-joint theta2 corpus theta-probs)
@@ -114,7 +115,7 @@
     (list (- result1 marginalCorpus)
           (- result2 marginalCorpus))))
 
-;5
+;#5
 (compute-conditional-dist my-corpus theta-prior)
 ; results before exponentiation: (-0.5849625007211561 -1.584962500721156)
 ; conditional distribution after exponentiation:
@@ -135,7 +136,7 @@
     
 
 
-;6
+;#6
 (defn compute-posterior-predictive [observed-corpus new-corpus theta-probs] 
   (let 
    [conditional-dist (compute-conditional-dist observed-corpus theta-probs) ;log probabilities of thetas
@@ -153,6 +154,9 @@
 ; 2^(-6.2630344058337934) = 0.0104 ->  around 1 percent probability of generating the same corpus again
 ; comparing to marginal likelihood from number 2, this value takes the updated beliefs learned from prior corpus into account
 ; so the probability of accuracy of the new corpus is higher than the old one because it has been trained
+
+
+
 ; Given helper functions from Problem 7:
 ;; normalize
 (defn normalize [params]
@@ -180,13 +184,14 @@
                                                 (cons (sample-categorical vocabulary probabilities)
                                                       (sample-BOW-sentence (- len 1) probabilities))))
 
-;7
+
+;#7
 (defn sample-BOW-corpus [theta sent-len corpus-len]
   (repeat (fn [] (sample-BOW-sentence sent-len theta)) corpus-len)
 )
 
 
-;8
+;#8
 ;; returns a list with two elements: 
 ;; a value of θ sampled from the distribution defined by theta-probs
 ;; and a corpus sampled from the bag of words model given the sampled θ. 
@@ -206,7 +211,8 @@
   )
 )
 
-;; 9
+
+;#9
 ;; Define a procedure estimate-corpus-marginal, the prcedure should return
 ;; an estimate of the marginal likelihood of the target corpus, using the formula
 ;; defined in Equestion 3
@@ -230,7 +236,7 @@
 
 (estimate-corpus-marginal my-corpus 10 2 2 theta-prior)
 
-;; 10
+;; #10
 (estimate-corpus-marginal my-corpus 50 2 2 theta-prior) 
 ;; Since we were calling the function with a sample size of 50, the output
 ;; would fluctuate from run to run. In some runs, the estimated probability
@@ -251,7 +257,7 @@
 ;; sample size increases. 
 
 
-;; 11
+;; #11
 (defn rejection-sampler [theta observed-corpus sample-size sent-len corpus-len theta-probs]
   (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
         accepted (filter #(= (get-corpus %) observed-corpus) samples)
@@ -264,7 +270,7 @@
       0
       (/ theta-count total))))
 
-;; 12
+;; #12
 (rejection-sampler theta1 my-corpus 100 2 2 theta-prior)
 ;; After calling the rejection-sample function with a sample size of 100, 
 ;; a number otimes, I noticed that the results fluctuated significantly. 
