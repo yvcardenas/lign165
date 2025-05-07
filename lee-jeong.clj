@@ -115,7 +115,7 @@
           (- result2 marginalCorpus))))
 
 ;5
-
+(compute-conditional-dist my-corpus theta-prior)
 ; results before exponentiation: (-0.5849625007211561 -1.584962500721156)
 ; conditional distribution after exponentiation:
 (def p1 (Math/pow 2 -0.5849625007211561))
@@ -152,7 +152,7 @@
 ; results of calling (compute-posterior-predictive my-corpus my-corpus theta-prior): -6.2630344058337934
 ; 2^(-6.2630344058337934) = 0.0104 ->  around 1 percent probability of generating the same corpus again
 ; comparing to marginal likelihood from number 2, this value takes the updated beliefs learned from prior corpus into account
-
+; so the probability of accuracy of the new corpus is higher than the old one because it has been trained
 ; Given helper functions from Problem 7:
 ;; normalize
 (defn normalize [params]
