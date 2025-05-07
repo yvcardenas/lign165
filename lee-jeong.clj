@@ -225,8 +225,8 @@
 (defn sample-thetas-corpora [sample-size sent-len corpus-len theta-probs]
   (repeatedly sample-size #(sample-theta-corpus sent-len corpus-len theta-probs)))
 
-(defn sample-theta-corpus [sent-len corpus-len theta-probs]
-  (list theta1 '((call me) (call ishmael))))
+;; (defn sample-theta-corpus [sent-len corpus-len theta-probs]
+;;   (list theta1 '((call me) (call ishmael))))
 
 (defn estimate-corpus-marginal [corpus sample-size sent-len corpus-len theta-probs]
   (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)

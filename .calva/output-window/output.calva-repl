@@ -25,4 +25,3 @@ to the change, by configuring this setting as false:
 and then add "**/.calva/repl.calva-repl" to your ".gitignore" file.
 
 
-clj꞉user꞉> 
