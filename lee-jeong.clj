@@ -11,9 +11,9 @@
 
 (def vocabulary '(call me ishmael))
 
-(def theta1 (list (/ 1 2 ) (/ 1 4 ) (/ 1 4 )))
+(def theta1 (list (/ 1 2) (/ 1 4) (/ 1 4)))
 
-(def theta2 (list (/ 1 4 ) (/ 1 2 ) (/ 1 4 )))
+(def theta2 (list (/ 1 4) (/ 1 2) (/ 1 4)))
 
 (def thetas (list theta1 theta2))
 
@@ -31,7 +31,7 @@
   (if (empty? lst)
     base
     (f (first lst)
-      (list-foldr f base (rest lst)))))
+       (list-foldr f base (rest lst)))))
 
 ;; apply log
 (defn log2 [n]
@@ -40,29 +40,29 @@
 ;; calculates log probability of BOW
 (defn score-BOW-sentence [sen probabilities]
   (list-foldr
-    (fn [word rest-score]
-      (+ (log2 (score-categorical word vocabulary probabilities))
+   (fn [word rest-score]
+     (+ (log2 (score-categorical word vocabulary probabilities))
         rest-score))
-    0
-  sen))
+   0
+   sen))
 
 ;; calculates log probability of corpus (it's a log probabillity becuase it uses score-BOW-sentence)
 (defn score-corpus [corpus probabilities]
   (list-foldr
-    (fn [sen rst]
-      (+ (score-BOW-sentence sen probabilities) rst))
-    0
-    corpus))
+   (fn [sen rst]
+     (+ (score-BOW-sentence sen probabilities) rst))
+   0
+   corpus))
 
 ;; wanna compute log(a + b + c) but only know log a, log b, log c
 ;; log-vals: a list of log probabilities
 (defn logsumexp [log-vals]
   (let [mx (apply max log-vals)]
     (+ mx
-      (log2
+       (log2
         (apply +
-          (map (fn [z] (Math/pow 2 z))
-            (map (fn [x] (- x mx)) log-vals)))))))
+               (map (fn [z] (Math/pow 2 z))
+                    (map (fn [x] (- x mx)) log-vals)))))))
 
 ;; initial corpus
 (def my-corpus '((call me)
@@ -76,8 +76,7 @@
 
 (defn theta-corpus-joint [theta corpus theta-probs]
   (let [log-prob-theta (log2 (score-categorical theta thetas theta-probs))]
-    (+ (score-corpus corpus theta) log-prob-theta))
-)
+    (+ (score-corpus corpus theta) log-prob-theta)))
 
 ;; -6 + (-1) = -7
 ;; should return -7
@@ -90,9 +89,7 @@
 ;; log(Sigma θ∈Θ Pr(C= corpus,Θ = θ))
 
 (defn compute-marginal [corpus theta-probs]
-  (logsumexp (map (fn [theta] (theta-corpus-joint theta corpus theta-probs)) thetas)
-  )
-)
+  (logsumexp (map (fn [theta] (theta-corpus-joint theta corpus theta-probs)) thetas)))
 
 (compute-marginal my-corpus theta-prior)
 
@@ -104,8 +101,7 @@
 ;; from problem 2, we know log (Sigma θ∈Θ Pr(C= corpus,Θ = θ))
 
 (defn compute-conditional-prob [theta corpus theta-probs]
-  (- (theta-corpus-joint theta corpus theta-probs) (compute-marginal corpus theta-probs))
-)
+  (- (theta-corpus-joint theta corpus theta-probs) (compute-marginal corpus theta-probs)))
 
 
 ;#4
@@ -122,7 +118,7 @@
 ; conditional distribution after exponentiation:
 (def p1 (Math/pow 2 -0.5849625007211561))
 (def p2 (Math/pow 2 -1.584962500721156))
-    
+
 (println "P(theta1 | corpus):" p1)
 (println "P(theta2 | corpus):" p2)
 
@@ -134,21 +130,20 @@
 ; The conditional distribution of the two thetas given the corpus indicates that theta1 is more 
 ; likely than theta2, because theta1 assigns a higher probability to the word 'call' that repeats the most
 ; in the corpus. So theta1 aligns with the word counts in the corpus more than theta2. 
-    
+
 
 
 ;#6
-(defn compute-posterior-predictive [observed-corpus new-corpus theta-probs] 
-  (let 
+(defn compute-posterior-predictive [observed-corpus new-corpus theta-probs]
+  (let
    [conditional-dist (compute-conditional-dist observed-corpus theta-probs) ;log probabilities of thetas
     corpusTheta1 (score-corpus new-corpus theta1) ;log P(corpus | theta1)
     corpusTheta2 (score-corpus new-corpus theta2) ;log P(corpus | theta2)
     theta1Result (+ (first conditional-dist) corpusTheta1) ;log P(theta1 | corpus) + log P(corpus | theta1)
     theta2Result (+ (last conditional-dist) corpusTheta2) ;log P(theta2 | corpus) + log P(corpus | theta2) 
-    ] 
+    ]
     (logsumexp (list theta1Result theta2Result)) ;log P(corpus | theta)
-    )
-)
+    ))
 
 ; probability of the new corpus (in this case same as the old one) being generated after observing the old corpus
 ; results of calling (compute-posterior-predictive my-corpus my-corpus theta-prior): -6.2630344058337934
@@ -167,7 +162,7 @@
 ;; coin flip
 (defn flip [weight]
   (if (< (rand 1) weight)
-    true 
+    true
     false))
 
 ;; picks one from outcomes
@@ -175,7 +170,7 @@
   (if (flip (first params))
     (first outcomes)
     (sample-categorical (rest outcomes)
-      (normalize (rest params)))))
+                        (normalize (rest params)))))
 
 ;; repeats function call n times                                                                                
 (defn repeat [f n]
@@ -188,13 +183,12 @@
   (if (= len 0)
     '()
     (cons (sample-categorical vocabulary probabilities)
-      (sample-BOW-sentence (- len 1) probabilities))))
+          (sample-BOW-sentence (- len 1) probabilities))))
 
 
 ;#7
 (defn sample-BOW-corpus [theta sent-len corpus-len]
-  (repeat (fn [] (sample-BOW-sentence sent-len theta)) corpus-len)
-)
+  (repeat (fn [] (sample-BOW-sentence sent-len theta)) corpus-len))
 
 
 ;#8
@@ -212,10 +206,7 @@
 (defn sample-theta-corpus [sent-len corpus-len theta-probs]
   (let [theta (sample-categorical thetas theta-probs)]
     (let [corpus (sample-BOW-corpus theta sent-len corpus-len)]
-      (list theta corpus)
-    )
-  )
-)
+      (list theta corpus))))
 
 
 ;#9
@@ -231,19 +222,20 @@
 (defn sample-thetas-corpora [sample-size sent-len corpus-len theta-probs]
   (repeat (fn [] (sample-theta-corpus sent-len corpus-len theta-probs)) sample-size))
 
-;; (defn sample-theta-corpus [sent-len corpus-len theta-probs]
-;;   (list theta1 '((call me) (call ishmael))))
-
 (defn estimate-corpus-marginal [corpus sample-size sent-len corpus-len theta-probs]
   (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
-        corpora (map get-corpus samples)
-        match-count (count (filter #(= % corpus) corpora))]
-    (/ match-count sample-size)))
+         corpora (map get-corpus samples) ; extract just the corpus part from the samples
+         matches (map (fn [c] (if (= c corpus) 1 0)) corpora) ;apply indicator function described in instructions
+         total-matches (if (empty? matches) ;sum up how many time the target corpus appeared
+                         0
+                         (apply + matches))]
+     (/ total-matches sample-size))) ;divide the num of matches by total samples to get prob
+
 
 (estimate-corpus-marginal my-corpus 10 2 2 theta-prior)
 
 ;; #10
-(estimate-corpus-marginal my-corpus 50 2 2 theta-prior) 
+(estimate-corpus-marginal my-corpus 50 2 2 theta-prior)
 ;; Since we were calling the function with a sample size of 50, the output
 ;; would fluctuate from run to run. In some runs, the estimated probability
 ;; of the corpus was 0.0, while in others it was 0.08. This variability is 
@@ -267,27 +259,43 @@
 ;; helpers
 (defn get-count [obs observation-list count]
   (if (empty? observation-list)
-      count
-      (if (= obs (first observation-list))
-        (get-count obs (rest observation-list) (+ 1 count))
-        (get-count obs (rest observation-list) count))))
+    count
+    (if (= obs (first observation-list))
+      (get-count obs (rest observation-list) (+ 1 count))
+      (get-count obs (rest observation-list) count))))
 
 (defn get-counts [outcomes observation-list]
   (let [count-obs (fn [obs] (get-count obs observation-list 0))]
-  (map count-obs outcomes)))
+    (map count-obs outcomes)))
 
+;; collects thetas that match the observed corpus
+(defn collect-matching-thetas [samples observed-corpus]
+  (if (empty? samples)
+    '()
+    (let [sample (first samples)
+          rest-matching (collect-matching-thetas (rest samples) observed-corpus)]
+      (if (= (get-corpus sample) observed-corpus)
+        (cons (get-theta sample) rest-matching) ;keep theta if corpus matches
+        rest-matching)))) ;else skip it
+
+;; Recursively finds the index of item in the collection starting from idx (we'll put to 0)
+(defn index-of [item coll idx]
+  (if (empty? coll)
+    nil
+    (if (= item (first coll))
+      idx
+      (index-of item (rest coll) (+ 1 idx)))))
 
 (defn rejection-sampler [theta observed-corpus sample-size sent-len corpus-len theta-probs]
   (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
-    accepted (filter #(= (get-corpus %) observed-corpus) samples)
-    accepted-thetas (map get-theta accepted)
-    counts (get-counts thetas accepted-thetas)
-    theta-index (.indexOf thetas theta)
-    theta-count (nth counts theta-index)
-    total (count accepted)]
-    (if (zero? total)
-      0
-      (/ theta-count total))))
+         accepted-thetas (collect-matching-thetas samples observed-corpus)
+         counts (get-counts thetas accepted-thetas)
+         theta-index (index-of theta thetas 0)
+         theta-count (if theta-index (nth counts theta-index) 0)
+         total (count accepted-thetas)]
+     (if (zero? total)
+       0
+       (/ theta-count total))))
 
 ;; #12
 (rejection-sampler theta1 my-corpus 100 2 2 theta-prior)
