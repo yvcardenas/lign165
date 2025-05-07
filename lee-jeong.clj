@@ -264,14 +264,27 @@
 
 
 ;; #11
+;; helpers
+(defn get-count [obs observation-list count]
+  (if (empty? observation-list)
+      count
+      (if (= obs (first observation-list))
+        (get-count obs (rest observation-list) (+ 1 count))
+        (get-count obs (rest observation-list) count))))
+
+(defn get-counts [outcomes observation-list]
+  (let [count-obs (fn [obs] (get-count obs observation-list 0))]
+  (map count-obs outcomes)))
+
+
 (defn rejection-sampler [theta observed-corpus sample-size sent-len corpus-len theta-probs]
   (let [samples (sample-thetas-corpora sample-size sent-len corpus-len theta-probs)
-        accepted (filter #(= (get-corpus %) observed-corpus) samples)
-        accepted-thetas (map get-theta accepted)
-        counts (get-counts thetas accepted-thetas)
-        theta-index (.indexOf thetas theta)
-        theta-count (nth counts theta-index)
-        total (count accepted)]
+    accepted (filter #(= (get-corpus %) observed-corpus) samples)
+    accepted-thetas (map get-theta accepted)
+    counts (get-counts thetas accepted-thetas)
+    theta-index (.indexOf thetas theta)
+    theta-count (nth counts theta-index)
+    total (count accepted)]
     (if (zero? total)
       0
       (/ theta-count total))))
